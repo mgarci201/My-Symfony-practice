@@ -26,12 +26,12 @@ class DefaultController extends Controller
     public function createAction()
     {
         $category = new Category();
-        $category->setName('Bad Blood');
+        $category->setName('Big test');
 
     	$product = new Product();
-    	$product->setName('Exo Mini 4-3000');
-    	$product->setPrice('10.00');
-    	$product->setDescription('Just another Testing Product 1');
+    	$product->setName('Macho x200');
+    	$product->setPrice('250.00');
+    	$product->setDescription('2000 BTUs');
         
         // relating this product to category
         $product->setCategory($category);
@@ -73,16 +73,28 @@ class DefaultController extends Controller
     /**
      * @Route("/app/find", name="find")
      */       
-    public function findAction()
+    public function findAction($name = "Exo")
     {
     	$em = $this->getDoctrine()->getManager();
     	$product = $em->getRepository('AppBundle:Product')
-    	->findAllOrderedByName();
+    	->findByName($name);
 
 
     	$em->flush();
     	return new Response('Viewing product: '.$name);
 
+    }
+
+    /**
+     * @Route("/app/testShow", name="testShow")
+     */       
+    public function showAction($id)
+    {
+        $product = $this->getDoctrine()
+        ->getRepository('AppBundle:Product')
+        ->find($id);
+
+        $categoryName = $product->getCategory()->getName();
     }
 
     // /**
