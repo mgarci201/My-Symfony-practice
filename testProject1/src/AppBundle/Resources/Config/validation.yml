@@ -1,0 +1,10 @@
+AppBundle\Model\Contact:
+  properties:
+  email:
+    - Email:
+  message: Address {{ value }} is not valid.
+  checkMX: true
+  message:
+    - NotBlank:
+    - Length:
+    min: 3
