@@ -103,8 +103,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/register")
-     * @Method("GET")
+     * @Route("/register/create", name="account_create")
      */ 
      public function createRegAction(Request $request)
      {
@@ -127,7 +126,9 @@ class DefaultController extends Controller
             );
      }    
 
-
+    /**
+     * @Route("/register")
+     */ 
     public function registerAction()
     {
         $registration = new Registration();
