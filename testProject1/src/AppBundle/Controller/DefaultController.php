@@ -10,8 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Tag;
+use AppBundle\Entity\Task;
 use AppBundle\Form\Type\RegistrationType;
 use AppBundle\Form\Model\Registration;
+use AppBundle\Form\Type\TagType;
+use AppBundle\Form\Type\TaskType;
+
 
 class DefaultController extends Controller
 {
@@ -140,6 +145,34 @@ class DefaultController extends Controller
             'default/register.html.twig',
             array('form' => $form->createView())
             );
+    }
+
+    /**
+     * @Route("/collection")
+     */     
+    public function collectionAction(Request $request)
+    {
+        $task = new Task();
+
+        $tag1 = New Tag();
+        $tag1->name = 'tag1';
+        $task->getTags()->add($tag1);
+
+        $tag2 = New Tag();
+        $tag2->name = 'tag2';
+        $task->getTags()->add($tag2);
+
+        $form = $this->createForm(new TaskType(), $task);
+
+        $form->handleRequest($request);
+
+        if($form->isValid()) {
+            return new Response('Success, more to go!');
+        }
+
+        return $this->render('default/new.html.twig', array('form' => $form->createView(),
+        ));
+
     }
 
     // /**
