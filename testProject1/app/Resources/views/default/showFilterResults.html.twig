@@ -1,0 +1,18 @@
+ <table class="records_list  table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Model</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entity in entities %}
+        <tr>
+          <td>{{ entity.id }}</td>
+          <td>{{ entity.model }}</td>
+          <td>{{ entity.price }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+   </table>

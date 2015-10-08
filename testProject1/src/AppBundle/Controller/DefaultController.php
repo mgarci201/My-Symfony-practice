@@ -16,7 +16,7 @@ use AppBundle\Form\Type\RegistrationType;
 use AppBundle\Form\Model\Registration;
 use AppBundle\Form\Type\TagType;
 use AppBundle\Form\Type\TaskType;
-
+use AppBundle\Form\Filter\BaseCarFilterType;
 
 class DefaultController extends Controller
 {
@@ -173,6 +173,44 @@ class DefaultController extends Controller
         return $this->render('default/new.html.twig', array('form' => $form->createView(),
         ));
 
+    }
+
+    // your custom methods and routes
+    //please insert the code just after the indexAction, if you dont, the route may crash
+    /**
+    * Displays a form to filter  existing Cars entity.
+    *
+    * @Route("/filter/", name="car_filter")
+    *
+    */
+    public function baseFilterAction()
+    {
+        $form = $this->get('form.factory')->create(new BaseCarFilterType());
+        if ($this->get('request')->query->has('submit-filter')) {
+            // bind values from the request
+            $form->bind($this->get('request'));
+            
+            // initialize a query builder
+            $filterBuilder = $this->get('doctrine.orm.entity_manager')
+              ->getRepository('AppBundle:Car')
+              ->createQueryBuilder('e');
+
+            // build the query from the given form object
+            $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($form, $filterBuilder);
+        
+        //this is the place where everything hapen, the $filterBuilder only creates the query for the filters but can't get the 
+        //objects by itself so we need to "getQuery()" and then "getArrayResult()", thats all, the filtered have been loaded
+        $resultQuery = $filterBuilder->getQuery();
+        $filteredEntities = $resultQuery->getArrayResult();
+        
+            return $this->render('default/showFilterResults.html.twig', array(
+            'entities' => $fiteredEntities,
+          ));
+        }
+
+      return $this->render('default/baseFilter.html.twig', array(
+        'form' => $form->createView(),
+        ));        
     }
 
     // /**
