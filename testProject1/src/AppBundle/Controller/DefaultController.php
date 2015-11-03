@@ -98,13 +98,13 @@ class DefaultController extends Controller
     /**
      * @Route("/app/testShow", name="testShow")
      */       
-    public function showAction($id)
+    public function showAction($id = 2)
     {
         $product = $this->getDoctrine()
         ->getRepository('AppBundle:Product')
         ->find($id);
 
-        $categoryName = $product->getCategory()->getName();
+        $categoryName = $product->getCategory()->getName($id);
     }
 
     /**
@@ -212,6 +212,26 @@ class DefaultController extends Controller
         'form' => $form->createView(),
         ));        
     }
+
+    /**
+     * @Route("/app/product", name="product")
+     */ 
+    public function adminProductAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppBundle:ProductType')->findAll();
+
+        $productTypeForm->handleRequest($request);
+
+        return array(
+            'entity' =>$entity,
+            'productTypeForm' => $productTypeForm->createView(),
+            );
+        
+    }
+
+
+
 
     // /**
     //  * @Route("/app/product", name="product")
