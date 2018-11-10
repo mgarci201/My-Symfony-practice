@@ -231,7 +231,7 @@ class DefaultController extends Controller
     }
 
 
-
+/* I thought of this update here*/
 
     // /**
     //  * @Route("/app/product", name="product")
